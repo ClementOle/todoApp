@@ -98,12 +98,14 @@ public class TaskService {
     }
 
     private void showTask(Activity activity, Context context, String text) {
-        LinearLayout linearLayout = activity.findViewById(R.id.linearLayout);
+        LinearLayout linearLayout = activity.findViewById(R.id.linearLayout2);
+
 
         TextView TextView = new TextView(activity);
         TextView.setText(text);
         TextView.setTextSize(14);
         TextView.setPadding(5, 5, 5, 5);
+
 
         linearLayout.addView(TextView);
     }
