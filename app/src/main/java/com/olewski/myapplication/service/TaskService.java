@@ -51,10 +51,8 @@ public class TaskService {
                     JSONObject jsonTask = response;
                     Task task = null;
                     task = new Task(Integer.parseInt(jsonTask.getString("id")), jsonTask.getString("text"), Boolean.parseBoolean(jsonTask.getString("isDone")));
-                    TextView textView = activity.findViewById(R.id.textView2);
-                    // Display the formatted json data in text view
-                    showTask(activity, context, task.getText());
 
+                    getRequest(context, activity);
                 } catch (JSONException e) {
                     e.printStackTrace();
 
@@ -78,8 +76,6 @@ public class TaskService {
             public void onResponse(JSONArray response) {
 
                 try {
-                    TextView textView = activity.findViewById(R.id.textView2);
-                    textView.setText("");
                     // Loop through the array elements
                     for (int i = 0; i < response.length(); i++) {
                         // Get current json object
