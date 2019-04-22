@@ -3,7 +3,9 @@ package com.olewski.myapplication.service;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -229,7 +231,16 @@ public class TaskService {
         textView.setText(task.getText());
         textView.setTextSize(14);
         textView.setPadding(15, 5, 5, 5);
-        textView.setMaxWidth(800);
+        textView.setMaxWidth(600);
+/*
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
+*/
+
+
         if (task.getDone()) {
             linearLayout1.setBackgroundColor(Color.BLACK);
         }
