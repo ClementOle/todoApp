@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,11 +22,25 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.olewski.myapplication.R;
+import com.olewski.myapplication.Util.UtilFilesStorage;
 import com.olewski.myapplication.model.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Writer;
+import java.util.List;
 
 public class TaskService {
 
@@ -71,6 +86,37 @@ public class TaskService {
         queue.add(jsonObjectRequest);
     }
 
+    public void getJson(final Context context, final Activity activity) {
+        try {
+            JSONArray jsonArray = UtilFilesStorage.readDataToJson(context);
+            if(jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    Task task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
+                    showTask(activity, context, task);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void saveJson(Context context, Activity activity) {
+        try {
+            EditText editText = activity.findViewById(R.id.editText);
+
+            Task task = new Task(editText.getText().toString(), false);
+
+            JSONObject jsonObject = new JSONObject("{ 'id' : '" + Math.random() * 2000 + "', 'text' : '" + task.getText() + "' , 'isDone' : 'false' }");
+
+            UtilFilesStorage.writeDataInJson(context, jsonObject);
+
+        } catch (Exception e) {
+            System.out.println("It didn't work !! \n" + e.toString());
+        }
+    }
+
     public void getRequest(final Context context, final Activity activity) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks";
@@ -111,7 +157,6 @@ public class TaskService {
     private void delete(final Task task, final Activity activity, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks/" + task.getId();
-        System.out.println(url);
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -126,6 +171,30 @@ public class TaskService {
         queue.add(stringRequest);
     }
 
+    private void update(final Task task, final Activity activity, final Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://192.168.43.60:8080/tasks/";
+        try {
+            JSONObject jsonObject = new JSONObject("{ 'id' : '" + task.getId() + "', 'text' : '" + task.getText() + "', 'isDone' : '" + task.getDone() + "'}");
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    getRequest(context, activity);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("That didn't work !! \n" + error.toString());
+                }
+            });
+            queue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showTask(final Activity activity, final Context context, final Task task) {
         LinearLayout linearLayout = activity.findViewById(R.id.linearLayout2);
         LinearLayout linearLayout1 = new LinearLayout(context);
@@ -136,14 +205,25 @@ public class TaskService {
         textView.setText(task.getText());
         textView.setTextSize(14);
         textView.setPadding(15, 5, 5, 5);
+        if (task.getDone()) {
+            linearLayout1.setBackgroundColor(Color.BLACK);
+        }
+
         Button button = new Button(context);
         button.setText("✓");
-        button.setPadding(5, 5, 5, 5);
+        button.setPadding(2, 2, 2, 2);
         button.setId(task.getId());
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                task.setDone(!task.getDone());
+                update(task, activity, context);
+            }
+        });
 
         Button button2 = new Button(context);
         button2.setText("X");
-        button2.setPadding(5, 5, 5, 5);
+        button2.setPadding(2, 2, 2, 2);
         button2.setId(task.getId());
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
