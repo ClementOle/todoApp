@@ -77,9 +77,9 @@ public class Task {
 
     public String toStringJson() {
         return "{" +
-                    "'id' : '" + id + "', " +
-                    "'text' : '" + text + "', " +
-                    "'isDone' : '" + isDone + "'" +
+                    "\'id\' : \'" + id + "\', " +
+                    "\'text' : \'" + text + "\', " +
+                    "\'isDone\' : \'" + isDone + "\'" +
                 "} ";
     }
 }

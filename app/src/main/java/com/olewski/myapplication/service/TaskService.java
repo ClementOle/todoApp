@@ -89,7 +89,9 @@ public class TaskService {
     public void getJson(final Context context, final Activity activity) {
         try {
             JSONArray jsonArray = UtilFilesStorage.readDataToJson(context);
-            if(jsonArray != null) {
+            if (jsonArray != null) {
+                LinearLayout linearLayout = activity.findViewById(R.id.linearLayout2);
+                linearLayout.removeAllViews();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Task task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
@@ -107,6 +109,7 @@ public class TaskService {
             EditText editText = activity.findViewById(R.id.editText);
 
             Task task = new Task(editText.getText().toString(), false);
+            editText.setText("");
 
             JSONObject jsonObject = new JSONObject("{ 'id' : '" + Math.random() * 2000 + "', 'text' : '" + task.getText() + "' , 'isDone' : 'false' }");
 
@@ -116,6 +119,25 @@ public class TaskService {
             System.out.println("It didn't work !! \n" + e.toString());
         }
     }
+
+   /* public void deleteTaskInFile(Context context, Activity activity, int id) {
+        try {
+            JSONArray jsonArray = UtilFilesStorage.readDataToJson(context);
+            boolean find = false;
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getInt("id") == id) {
+                        find = true;
+                        break;
+                    }
+                }
+            }
+            JSONArray jsonArray1 = UtilFilesStorage.writeDataInJson(this, )
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 
     public void getRequest(final Context context, final Activity activity) {
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -133,6 +155,8 @@ public class TaskService {
                         nextChild.setVisibility(View.GONE);
                     }
                     System.out.println("Flush");
+                    LinearLayout linearLayout = activity.findViewById(R.id.linearLayout2);
+                    linearLayout.removeAllViews();
                     for (int i = 0; i < response.length(); i++) {
                         // Get current json object
                         JSONObject jsonTask = response.getJSONObject(i);
@@ -217,7 +241,8 @@ public class TaskService {
             @Override
             public void onClick(View v) {
                 task.setDone(!task.getDone());
-                update(task, activity, context);
+//                update(task, activity, context);
+
             }
         });
 
@@ -228,7 +253,14 @@ public class TaskService {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete(task, activity, context);
+//                delete(task, activity, context);
+                try {
+                    String taskInJson = task.toStringJson();
+                    UtilFilesStorage.removeDataInJson(context, new JSONObject(taskInJson));
+                    getJson(context, activity);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
