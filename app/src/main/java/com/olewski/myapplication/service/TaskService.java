@@ -229,6 +229,7 @@ public class TaskService {
         textView.setText(task.getText());
         textView.setTextSize(14);
         textView.setPadding(15, 5, 5, 5);
+        textView.setMaxWidth(800);
         if (task.getDone()) {
             linearLayout1.setBackgroundColor(Color.BLACK);
         }
