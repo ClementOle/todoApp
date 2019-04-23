@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
+import android.util.JsonWriter;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,8 +113,13 @@ public class TaskService {
 
             Task task = new Task(editText.getText().toString(), false);
             editText.setText("");
+            //Echappement de toutes les apostrophe potentiellement présente dans le texte
+            String text = task.getText();
+            while(text.contains("'") && ((text.indexOf("'") != text.indexOf("\\")+1) || text.indexOf("'") == 0))
+                    text = text.replace("'", "\\'");
 
-            JSONObject jsonObject = new JSONObject("{ 'id' : '" + Math.random() * 2000 + "', 'text' : '" + task.getText() + "' , 'isDone' : 'false' }");
+
+            JSONObject jsonObject = new JSONObject("{ 'id' : '" + Math.random() * 2000 + "', 'text' : '" + text + "' , 'isDone' : 'false' }");
 
             UtilFilesStorage.writeDataInJson(context, jsonObject);
 
