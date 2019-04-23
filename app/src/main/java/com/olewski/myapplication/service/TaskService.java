@@ -98,10 +98,10 @@ public class TaskService {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Task task = null;
-                    if(jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone"))
+                    if (jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone"))
                         task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
-                    if(task != null)
-                    showTask(activity, context, task);
+                    if (task != null)
+                        showTask(activity, context, task);
                 }
             }
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class TaskService {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", Math.random() * 2000);
             jsonObject.put("text", task.getText());
-            jsonObject.put( "isDone", false);
+            jsonObject.put("isDone", false);
 
             UtilFilesStorage.writeDataInJson(context, jsonObject);
 
