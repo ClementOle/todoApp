@@ -97,7 +97,10 @@ public class TaskService {
                 linearLayout.removeAllViews();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    Task task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
+                    Task task = null;
+                    if(jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone"))
+                        task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
+                    if(task != null)
                     showTask(activity, context, task);
                 }
             }
@@ -114,12 +117,13 @@ public class TaskService {
             Task task = new Task(editText.getText().toString(), false);
             editText.setText("");
             //Echappement de toutes les apostrophe potentiellement présente dans le texte
-            String text = task.getText();
-            while(text.contains("'") && ((text.indexOf("'") != text.indexOf("\\")+1) || text.indexOf("'") == 0))
-                    text = text.replace("'", "\\'");
-
-
-            JSONObject jsonObject = new JSONObject("{ 'id' : '" + Math.random() * 2000 + "', 'text' : '" + text + "' , 'isDone' : 'false' }");
+/*            while(text.contains("'") && ((text.indexOf("'") != text.indexOf("\\")+1) || text.indexOf("'") == 0))
+                    text = text.replace("'", "\\'");*/
+//            String jsonInString = JSONObject.quote("{ \"id\" : \"" + Math.random() * 2000 + "\", \"text\" : \"" + task.getText() + "\" , \"isDone\" : \"false\" }");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", Math.random() * 2000);
+            jsonObject.put("text", task.getText());
+            jsonObject.put( "isDone", false);
 
             UtilFilesStorage.writeDataInJson(context, jsonObject);
 
@@ -273,8 +277,12 @@ public class TaskService {
             public void onClick(View v) {
 //                delete(task, activity, context);
                 try {
-                    String taskInJson = task.toStringJson();
-                    UtilFilesStorage.removeDataInJson(context, new JSONObject(taskInJson));
+//                    String taskInJson = task.toStringJson();
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("id", task.getId());
+                    jsonObject.put("text", task.getText());
+                    jsonObject.put("isDone", task.getDone());
+                    UtilFilesStorage.removeDataInJson(context, jsonObject);
                     getJson(context, activity);
                 } catch (JSONException e) {
                     e.printStackTrace();

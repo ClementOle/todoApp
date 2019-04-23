@@ -125,12 +125,14 @@ public class UtilFilesStorage {
                 int idFound = -1;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                    if (jsonObject1.getInt("id") == jsonObject.getInt("id")
-                    && jsonObject1.getString("text").equals(jsonObject.get("text")) &&
-                    jsonObject1.getBoolean("isDone") == jsonObject.getBoolean("isDone")) {
-                        idFound = i;
-                        break;
-                    }
+                    if(jsonObject1.has("id") && jsonObject1.has("text") && jsonObject1.has("isDone")
+                        && jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone"))
+                        if (jsonObject1.getInt("id") == jsonObject.getInt("id")
+                        && jsonObject1.getString("text").equals(jsonObject.get("text")) &&
+                        jsonObject1.getBoolean("isDone") == jsonObject.getBoolean("isDone")) {
+                            idFound = i;
+                            break;
+                        }
                 }
                 if (idFound != -1) {
                     jsonArray.remove(idFound);
