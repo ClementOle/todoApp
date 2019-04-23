@@ -240,7 +240,8 @@ public class TaskService {
         TextView textView = new TextView(activity);
         textView.setText(task.getText());
         textView.setTextSize(14);
-        textView.setPadding(15, 5, 5, 5);
+        textView.setPadding(15, 10, 5, 10);
+        textView.setMaxHeight(600);
         textView.setMaxWidth(600);
 /*
         Display display = activity.getWindowManager().getDefaultDisplay();
