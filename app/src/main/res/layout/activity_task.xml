@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/DarkTheme"
-    tools:context=".MainActivity">
+    tools:context=".Activity.TaskActivity">
 
     <Button
         android:id="@+id/button"
@@ -55,14 +55,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="0dp" />
+        app:layout_constraintGuide_begin="10dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="0dp" />
+        app:layout_constraintGuide_end="10dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
@@ -112,5 +112,13 @@
                 android:orientation="vertical" />
         </ScrollView>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="3dp" />
 
 </android.support.constraint.ConstraintLayout>

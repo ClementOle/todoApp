@@ -14,17 +14,21 @@ import java.io.IOException;
 public class UtilFilesStorage {
 
 
-    public static void createFile(Context context) {
+    /**
+     * Create a dataTodo.json file if it not exist
+     * @param context
+     */
+    public static void createFile(Context context, String fileName) {
         try {
             boolean isFileExist = false;
-            for (String fileName : context.fileList()) {
-                if (fileName.equals("dataTodo.json")) {
+            for (String file : context.fileList()) {
+                if (file.equals(fileName)) {
                     isFileExist = true;
                     break;
                 }
             }
             if (!isFileExist) {
-                FileOutputStream outputStream = context.openFileOutput("dataTodo.json", Context.MODE_PRIVATE);
+                FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
                 outputStream.close();
             }
         } catch (Exception e) {
@@ -32,25 +36,38 @@ public class UtilFilesStorage {
         }
     }
 
-    public static FileInputStream openFileToRead(Context context) {
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static FileInputStream openFileToRead(Context context, String fileName) {
         try {
-            return context.openFileInput("dataTodo.json");
+            return context.openFileInput(fileName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static FileOutputStream openFileToWrite(Context context) {
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static FileOutputStream openFileToWrite(Context context, String fileName) {
         try {
-            return context.openFileOutput("dataTodo.json", Context.MODE_PRIVATE);
+            return context.openFileOutput(fileName, Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-
+    /**
+     *
+     * @param file
+     */
     public static void closeFileToRead(FileInputStream file) {
         try {
             file.close();
@@ -59,6 +76,10 @@ public class UtilFilesStorage {
         }
     }
 
+    /**
+     *
+     * @param file
+     */
     public static void closeFileToWrite(FileOutputStream file) {
         try {
             file.close();
@@ -67,14 +88,20 @@ public class UtilFilesStorage {
         }
     }
 
-    public static JSONArray readDataToJson(Context context) {
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static JSONArray readDataToJson(Context context, String fileName) {
         try {
-            FileInputStream file = openFileToRead(context);
+            FileInputStream file = openFileToRead(context, fileName);
             StringBuilder data = new StringBuilder();
+
             if (file != null) {
                 int bytes;
                 while ((bytes = file.read()) != -1)
-                    data.append((char) bytes);
+                    data.append(Character.toChars(bytes));
 
                 closeFileToRead(file);
             }
@@ -89,24 +116,32 @@ public class UtilFilesStorage {
         }
     }
 
-    public static boolean writeDataInJson(Context context, JSONObject jsonObject) {
+    /**
+     *
+     * @param context
+     * @param jsonObject
+     * @return
+     */
+    public static boolean writeDataInJson(Context context, JSONObject jsonObject, String fileName) {
         try {
-            JSONArray jsonArray = readDataToJson(context);
+            JSONArray jsonArray = readDataToJson(context, fileName);
             if (jsonArray != null && jsonObject != null) {
                 jsonArray.put(jsonObject);
 
-                FileOutputStream file = openFileToWrite(context);
+                FileOutputStream file = openFileToWrite(context, fileName);
                 if (file != null) {
-                    file.write(jsonArray.toString().getBytes());
+
+                    file.write(jsonArray.toString().getBytes("UTF-8"));
                     closeFileToWrite(file);
                     return true;
                 }
             } else if (jsonObject != null) {
-                FileOutputStream file = openFileToWrite(context);
+                FileOutputStream file = openFileToWrite(context, fileName);
+
                 if (file != null) {
                     JSONArray jsonArray1 = new JSONArray("[]");
                     jsonArray1.put(jsonObject);
-                    file.write(jsonArray1.toString().getBytes());
+                    file.write(jsonArray1.toString().getBytes("UTF-8"));
                     return true;
                 }
             }
@@ -118,9 +153,15 @@ public class UtilFilesStorage {
 
     }
 
-    public static boolean removeDataInJson(Context context, JSONObject jsonObject) {
+    /**
+     *
+     * @param context
+     * @param jsonObject
+     * @return
+     */
+    public static boolean removeDataInJson(Context context, JSONObject jsonObject, String fileName) {
         try {
-            JSONArray jsonArray = readDataToJson(context);
+            JSONArray jsonArray = readDataToJson(context, fileName);
             if (jsonArray != null && jsonObject != null) {
                 int idFound = -1;
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -138,9 +179,9 @@ public class UtilFilesStorage {
                     jsonArray.remove(idFound);
                 }
 
-                FileOutputStream file = openFileToWrite(context);
+                FileOutputStream file = openFileToWrite(context, fileName);
                 if (file != null) {
-                    file.write(jsonArray.toString().getBytes());
+                    file.write(jsonArray.toString().getBytes("UTF-8"));
                     closeFileToWrite(file);
                     return true;
                 }

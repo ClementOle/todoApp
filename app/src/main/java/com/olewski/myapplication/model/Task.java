@@ -6,7 +6,7 @@ public class Task {
     private Integer id;
     private String text;
     private Boolean isDone;
-
+    private Integer listId;
 
     public Task() {
     }
@@ -20,6 +20,13 @@ public class Task {
         this.id = id;
         this.text = text;
         this.isDone = isDone;
+    }
+
+    public Task(Integer id, String text, Boolean isDone, Integer listId) {
+        this.id = id;
+        this.text = text;
+        this.isDone = isDone;
+        this.listId = listId;
     }
 
     public Integer getId() {
@@ -46,6 +53,14 @@ public class Task {
         isDone = done;
     }
 
+    public Integer getListId() {
+        return listId;
+    }
+
+    public void setListId(Integer listId) {
+        this.listId = listId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,16 +68,19 @@ public class Task {
 
         Task task = (Task) o;
 
-        if (id != null ? !id.equals(task.id) : task.id != null) return false;
-        if (text != null ? !text.equals(task.text) : task.text != null) return false;
-        return isDone != null ? isDone.equals(task.isDone) : task.isDone == null;
+        if (getId() != null ? !getId().equals(task.getId()) : task.getId() != null) return false;
+        if (getText() != null ? !getText().equals(task.getText()) : task.getText() != null)
+            return false;
+        if (isDone != null ? !isDone.equals(task.isDone) : task.isDone != null) return false;
+        return getListId() != null ? getListId().equals(task.getListId()) : task.getListId() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (text != null ? text.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getText() != null ? getText().hashCode() : 0);
         result = 31 * result + (isDone != null ? isDone.hashCode() : 0);
+        result = 31 * result + (getListId() != null ? getListId().hashCode() : 0);
         return result;
     }
 
@@ -72,14 +90,15 @@ public class Task {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", isDone=" + isDone +
+                ", listId=" + listId +
                 '}';
     }
 
     public String toStringJson() {
         return "{" +
-                    "\"id\" : \"" + id + "\", " +
-                    "\"text\" : \"" + text + "\", " +
-                    "\"isDone\" : \'" + isDone + "\"" +
+                "\"id\" : \"" + id + "\", " +
+                "\"text\" : \"" + text + "\", " +
+                "\"isDone\" : \'" + isDone + "\"" +
                 "} ";
     }
 }
