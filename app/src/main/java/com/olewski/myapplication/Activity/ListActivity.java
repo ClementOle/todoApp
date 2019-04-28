@@ -32,8 +32,6 @@ public class ListActivity extends AppCompatActivity {
                 save();
             }
         });
-
-
         ListService.getListFromJson(this.getApplicationContext(), this, "dataList.json");
 
     }
@@ -43,18 +41,11 @@ public class ListActivity extends AppCompatActivity {
         ListService.getListFromJson(getApplicationContext(), this, "dataList.json");
     }
 
-    public void gotoMainActivity() {
-        Intent intent = new Intent(this, TaskActivity.class);
-        startActivity(intent);
-    }
-
     public void gotoTaskActivity(int listId, Context context) {
-        System.out.println(listId);
         TaskActivity.idList = listId;
         Intent intent = new Intent(context, TaskActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-
     }
     public View.OnClickListener aa(final Context context, final List list) {
         return new View.OnClickListener() {

@@ -48,8 +48,9 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void gotoMenu() {
-        Intent intent = new Intent(this, ListActivity.class);
-        startActivity(intent);
+        finish();
+/*        Intent intent = new Intent(this, ListActivity.class);
+        startActivity(intent);*/
     }
 
     protected void get() {
