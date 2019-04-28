@@ -44,7 +44,7 @@ public class ListService {
 
     public static void saveListInJson(Context context, Activity activity, String fileName) {
         try {
-            EditText editText = activity.findViewById(R.id.textViewNewList);
+            EditText editText = activity.findViewById(R.id.editText2);
 
             List list = new List(editText.getText().toString());
             editText.setText("");
@@ -64,18 +64,19 @@ public class ListService {
         LinearLayout linearLayout1 = new LinearLayout(context);
         linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
 
+/*
 
         TextView textView = new TextView(activity);
         textView.setText(list.getName());
         textView.setTextSize(14);
         textView.setPadding(15, 10, 5, 10);
-        textView.setTextColor(Color.WHITE);
+        textView.setTextColor(Color.BLACK);
         textView.setMaxHeight(600);
-        textView.setMaxWidth(600);
+        textView.setMaxWidth(600);*/
 
 
         Button button = new Button(context);
-        button.setText("✓");
+        button.setText(list.getName());
         button.setPadding(2, 2, 2, 2);
         button.setId(list.getId());
         button.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +89,7 @@ public class ListService {
         });
 
 
-        linearLayout1.addView(textView);
+//        linearLayout1.addView(textView);
         linearLayout1.addView(button);
         linearLayout.addView(linearLayout1);
     }
