@@ -1,5 +1,6 @@
 package com.olewski.myapplication.Activity;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.olewski.myapplication.Activity.TaskActivity;
 import com.olewski.myapplication.R;
-import com.olewski.myapplication.Util.UtilFilesStorage;
 import com.olewski.myapplication.model.List;
 import com.olewski.myapplication.service.ListService;
+
+import java.util.EventListener;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -21,15 +23,6 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-        Button buttonAAa = findViewById(R.id.button3);
-        buttonAAa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("click");
-                gotoMainActivity();
-            }
-        });
 
         Button buttonB = findViewById(R.id.button5);
 
@@ -40,10 +33,6 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-//        UtilFilesStorage.createFile(this, "dataList.json");
-//        List list = new List("todo");
-
-        LinearLayout linearLayout = findViewById(R.id.listTaskLinearLayout);
 
         ListService.getListFromJson(this.getApplicationContext(), this, "dataList.json");
 
@@ -51,6 +40,7 @@ public class ListActivity extends AppCompatActivity {
 
     public void save() {
         ListService.saveListInJson(getApplicationContext(), this, "dataList.json");
+        ListService.getListFromJson(getApplicationContext(), this, "dataList.json");
     }
 
     public void gotoMainActivity() {
@@ -58,7 +48,23 @@ public class ListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void gotoTaskActivity(int listId, Context context) {
+        System.out.println(listId);
+        TaskActivity.idList = listId;
+        Intent intent = new Intent(context, TaskActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
 
-
+    }
+    public View.OnClickListener aa(final Context context, final List list) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,
+                        "Open !", Toast.LENGTH_LONG).show();
+               gotoTaskActivity(list.getId(), context);
+            }
+        };
+    }
 
 }

@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class UtilFilesStorage {
 
@@ -131,17 +132,26 @@ public class UtilFilesStorage {
                 FileOutputStream file = openFileToWrite(context, fileName);
                 if (file != null) {
 
-                    file.write(jsonArray.toString().getBytes("UTF-8"));
+                    file.write(jsonArray.toString().getBytes(StandardCharsets.UTF_8));
                     closeFileToWrite(file);
                     return true;
                 }
             } else if (jsonObject != null) {
                 FileOutputStream file = openFileToWrite(context, fileName);
 
-                if (file != null) {
+                if (file != null && fileName.equals("dataList.json")) {
+                    JSONArray jsonArray1 = new JSONArray("[]");
+                    JSONObject jsonDefaultList = new JSONObject();
+                    jsonDefaultList.put("id", 0);
+                    jsonDefaultList.put("name", "Default");
+                    jsonArray1.put(jsonDefaultList);
+                    jsonArray1.put(jsonObject);
+                    file.write(jsonArray1.toString().getBytes(StandardCharsets.UTF_8));
+                    return true;
+                } else if (file != null) {
                     JSONArray jsonArray1 = new JSONArray("[]");
                     jsonArray1.put(jsonObject);
-                    file.write(jsonArray1.toString().getBytes("UTF-8"));
+                    file.write(jsonArray1.toString().getBytes(StandardCharsets.UTF_8));
                     return true;
                 }
             }

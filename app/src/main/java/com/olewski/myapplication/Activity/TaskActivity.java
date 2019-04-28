@@ -12,7 +12,7 @@ import com.olewski.myapplication.service.TaskService;
 
 
 public class TaskActivity extends AppCompatActivity {
-
+    public static Integer idList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +53,10 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     protected void get() {
-        new TaskService().getTaskFromJson(this.getApplicationContext(), this, "dataTodo.json");
-//        new TaskService().getRequest(this.getApplicationContext(), this);
+        TaskService.getTaskFromJson(this.getApplicationContext(), this, "dataTodo.json");
     }
 
     protected void post() {
-        new TaskService().saveTaskInJson(this.getApplicationContext(), this, "dataTodo.json");
-        //new TaskService().postRequest(this.getApplicationContext(), this);
+        TaskService.saveTaskInJson(this.getApplicationContext(), this, "dataTodo.json");
     }
 }

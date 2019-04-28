@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.olewski.myapplication.Activity.TaskActivity;
 import com.olewski.myapplication.R;
 import com.olewski.myapplication.Util.UtilFilesStorage;
 import com.olewski.myapplication.model.Task;
@@ -28,10 +29,16 @@ public class TaskService {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Task task = null;
-                    if (jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone"))
-                        task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
-                    if (task != null)
-                        showTask(activity, context, task, fileName);
+                    if (jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone")) {
+                        if (jsonObject.has("listId") && TaskActivity.idList == jsonObject.getInt("listId")) {
+                            task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone")
+                                    , jsonObject.getInt("listId"));
+                            showTask(activity, context, task, fileName);
+                        } else if (!jsonObject.has("listId") && TaskActivity.idList == 0) {
+                            task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone"));
+                            showTask(activity, context, task, fileName);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -50,6 +57,7 @@ public class TaskService {
             jsonObject.put("id", Math.random() * 2000);
             jsonObject.put("text", task.getText());
             jsonObject.put("isDone", false);
+            jsonObject.put("listId", TaskActivity.idList);
 
             UtilFilesStorage.writeDataInJson(context, jsonObject, fileName);
 

@@ -20,6 +20,7 @@ public class Task {
         this.id = id;
         this.text = text;
         this.isDone = isDone;
+        this.listId = 0;
     }
 
     public Task(Integer id, String text, Boolean isDone, Integer listId) {
