@@ -24,7 +24,6 @@ import org.json.JSONObject;
 
 public class CrudApiService {
     /**
-     *
      * @param context
      * @param activity
      */
@@ -66,7 +65,6 @@ public class CrudApiService {
     }
 
     /**
-     *
      * @param context
      * @param activity
      */
@@ -109,7 +107,6 @@ public class CrudApiService {
     }
 
     /**
-     *
      * @param task
      * @param activity
      * @param context
@@ -132,7 +129,6 @@ public class CrudApiService {
     }
 
     /**
-     *
      * @param task
      * @param activity
      * @param context
