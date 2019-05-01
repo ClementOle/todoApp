@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class ListService {
         LinearLayout linearLayout = activity.findViewById(R.id.listTaskLinearLayout);
         LinearLayout linearLayout1 = new LinearLayout(context);
         linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
+
 
         Button button = new Button(context);
         button.setText(list.getName());

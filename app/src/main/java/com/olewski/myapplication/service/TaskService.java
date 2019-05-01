@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class TaskService {
                     Task task = null;
                     if (jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone")) {
                         if (jsonObject.has("listId") && TaskActivity.idList == jsonObject.getInt("listId")) {
+                            System.out.println(jsonObject.get("text").toString());
                             task = new Task(jsonObject.getInt("id"), jsonObject.getString("text"), jsonObject.getBoolean("isDone")
                                     , jsonObject.getInt("listId"));
                             showTask(activity, context, task, fileName);
@@ -83,15 +85,12 @@ public class TaskService {
         if (task.getDone()) {
             linearLayout1.setBackgroundColor(Color.BLACK);
         }
-
-        Button button = new Button(context);
-        button.setText("✓");
-        button.setPadding(2, 2, 2, 2);
-        button.setId(task.getId());
-        button.setOnClickListener(new View.OnClickListener() {
+        CheckBox checkBox = new CheckBox(context);
+        checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 task.setDone(!task.getDone());
+
 
             }
         });
@@ -116,8 +115,8 @@ public class TaskService {
             }
         });
 
+        linearLayout1.addView(checkBox);
         linearLayout1.addView(textView);
-        linearLayout1.addView(button);
         linearLayout1.addView(button2);
         linearLayout.addView(linearLayout1);
     }

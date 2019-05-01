@@ -11,12 +11,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtilFilesStorage {
 
 
     /**
      * Create a dataTodo.json file if it not exist
+     *
      * @param context
      */
     public static void createFile(Context context, String fileName) {
@@ -38,7 +41,6 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param context
      * @return
      */
@@ -52,7 +54,6 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param context
      * @return
      */
@@ -66,7 +67,6 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param file
      */
     public static void closeFileToRead(FileInputStream file) {
@@ -78,7 +78,6 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param file
      */
     public static void closeFileToWrite(FileOutputStream file) {
@@ -90,20 +89,29 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param context
      * @return
      */
     public static JSONArray readDataToJson(Context context, String fileName) {
         try {
+            //Ouverture du fichier
             FileInputStream file = openFileToRead(context, fileName);
             StringBuilder data = new StringBuilder();
-
+            List<Byte> byteArray = new ArrayList<>();
             if (file != null) {
                 int bytes;
+                //Récupération de chaque byte du fichier
                 while ((bytes = file.read()) != -1)
-                    data.append(Character.toChars(bytes));
+                    byteArray.add((byte) bytes);
 
+                //Conversion de la liste de bytes en tableau de byte
+                byte[] a = new byte[byteArray.size()];
+                for (int i = 0; i < byteArray.size(); i++) {
+                    a[i] = byteArray.get(i);
+                }
+                //Conversion du tableau de byte en utf-8
+                data.append(new String(a, StandardCharsets.UTF_8));
+                //Fermeture du fichier
                 closeFileToRead(file);
             }
             if (!data.toString().equals("")) {
@@ -118,7 +126,6 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param context
      * @param jsonObject
      * @return
@@ -164,7 +171,6 @@ public class UtilFilesStorage {
     }
 
     /**
-     *
      * @param context
      * @param jsonObject
      * @return
@@ -176,14 +182,22 @@ public class UtilFilesStorage {
                 int idFound = -1;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                    if(jsonObject1.has("id") && jsonObject1.has("text") && jsonObject1.has("isDone")
-                        && jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone"))
+                    if (jsonObject1.has("id") && jsonObject1.has("text") && jsonObject1.has("isDone")
+                            && jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone")) {
                         if (jsonObject1.getInt("id") == jsonObject.getInt("id")
-                        && jsonObject1.getString("text").equals(jsonObject.get("text")) &&
-                        jsonObject1.getBoolean("isDone") == jsonObject.getBoolean("isDone")) {
+                                && jsonObject1.getString("text").equals(jsonObject.get("text")) &&
+                                jsonObject1.getBoolean("isDone") == jsonObject.getBoolean("isDone")) {
                             idFound = i;
                             break;
                         }
+                    } else if (jsonObject1.has("id") && jsonObject1.has("name")
+                            && jsonObject.has("id") && jsonObject.has("name")) {
+                        if (jsonObject1.getInt("id") == jsonObject.getInt("id")
+                                && jsonObject1.getString("name").equals(jsonObject.getString("name"))) {
+                            idFound = i;
+                            break;
+                        }
+                    }
                 }
                 if (idFound != -1) {
                     jsonArray.remove(idFound);
@@ -191,7 +205,7 @@ public class UtilFilesStorage {
 
                 FileOutputStream file = openFileToWrite(context, fileName);
                 if (file != null) {
-                    file.write(jsonArray.toString().getBytes("UTF-8"));
+                    file.write(jsonArray.toString().getBytes(StandardCharsets.UTF_8));
                     closeFileToWrite(file);
                     return true;
                 }
