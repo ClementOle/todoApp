@@ -19,22 +19,14 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
 
         UtilFilesStorage.createFile(this, "dataTodo.json");
-        get();
 
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                get();
-            }
-        });
+        TaskService.getTaskFromJson(getApplicationContext(), TaskActivity.this, "dataTodo.json");
 
-        Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                post();
-                get();
-            }
-        });
+        Button postButton = findViewById(R.id.button);
+        postButton.setOnClickListener(configurePostButton());
+
+        Button getButton = findViewById(R.id.button2);
+        getButton.setOnClickListener(configureGetButton());
 
         Button button1 = findViewById(R.id.button4);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -50,11 +42,23 @@ public class TaskActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void get() {
-        TaskService.getTaskFromJson(this.getApplicationContext(), this, "dataTodo.json");
+    protected View.OnClickListener configureGetButton() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskService.getTaskFromJson(getApplicationContext(), TaskActivity.this, "dataTodo.json");
+            }
+        };
     }
 
-    protected void post() {
-        TaskService.saveTaskInJson(this.getApplicationContext(), this, "dataTodo.json");
+    protected View.OnClickListener configurePostButton() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskService.saveTaskInJson(getApplicationContext(), TaskActivity.this, "dataTodo.json");
+                TaskService.getTaskFromJson(getApplicationContext(), TaskActivity.this, "dataTodo.json");
+            }
+        };
+
     }
 }
