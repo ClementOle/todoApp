@@ -108,7 +108,7 @@ public class TaskService {
                     jsonObjectToModify.put("id", task.getId());
                     jsonObjectToModify.put("text", task.getText());
                     jsonObjectToModify.put("isDone", task.getDone());
-                    if(task.getListId() != null)
+                    if (task.getListId() != null)
                         jsonObjectToModify.put("listId", task.getListId());
 
                     UtilFilesStorage.modifyDataInJson(context, jsonObjectToModify, fileName);
@@ -131,7 +131,7 @@ public class TaskService {
                     jsonObject.put("id", task.getId());
                     jsonObject.put("text", task.getText());
                     jsonObject.put("isDone", task.getDone());
-                    if(task.getListId() != null)
+                    if (task.getListId() != null)
                         jsonObject.put("listId", task.getListId());
 
                     UtilFilesStorage.removeDataInJson(context, jsonObject, fileName);

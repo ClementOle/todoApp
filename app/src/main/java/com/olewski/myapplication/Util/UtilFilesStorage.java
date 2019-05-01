@@ -2,8 +2,6 @@ package com.olewski.myapplication.Util;
 
 import android.content.Context;
 
-import com.olewski.myapplication.model.Task;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +19,9 @@ public class UtilFilesStorage {
 
 
     /**
-     * Create a dataTodo.json file if it not exist
+     * Créer un fichier si il n'existe pas
      *
+     * @param fileName Nom du fichier
      * @param context
      */
     public static void createFile(Context context, String fileName) {
@@ -44,6 +43,9 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Ouvre le fichier spécifier en paramètre si il existe
+     *
+     * @param fileName Nom du fichier
      * @param context
      * @return
      */
@@ -57,6 +59,9 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Ouvre le fichier spécifier en paramètre si il existe
+     *
+     * @param fileName Nom du fichier
      * @param context
      * @return
      */
@@ -70,6 +75,8 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Ferme le fichier
+     *
      * @param file
      */
     public static void closeFileToRead(FileInputStream file) {
@@ -81,6 +88,8 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Ferme le fichier
+     *
      * @param file
      */
     public static void closeFileToWrite(FileOutputStream file) {
@@ -92,6 +101,9 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Lie le fichier si il existe
+     *
+     * @param fileName Nom du fichier à lire
      * @param context
      * @return
      */
@@ -129,8 +141,13 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Si le fichier spécifié existe : ajout de l'objet à la position spécifié ou à la fin du tableau si ce n'est pas spécifié
+     * Sinon initialise le fichier
+     *
+     * @param fileName     nom du fichier
+     * @param indexInArray position dans le tableau de donnée
      * @param context
-     * @param jsonObject
+     * @param jsonObject   Objet à insérer
      * @return
      */
     public static boolean writeDataInJson(Context context, JSONObject jsonObject, Integer indexInArray, String fileName) {
@@ -190,6 +207,9 @@ public class UtilFilesStorage {
     }
 
     /**
+     * Supprime l'objet du tableau de donnée si il existe
+     *
+     * @param fileName   Nom du fichier
      * @param context
      * @param jsonObject
      * @return
@@ -215,6 +235,14 @@ public class UtilFilesStorage {
         }
         return false;
     }
+
+    /**
+     * Modification des donnée
+     *
+     * @param context
+     * @param jsonObject Nom de l'objet à modifier
+     * @param fileName   Nom du fichier
+     */
 
     public static void modifyDataInJson(Context context, JSONObject jsonObject, String fileName) {
         try {
@@ -245,6 +273,14 @@ public class UtilFilesStorage {
         }
     }
 
+    /**
+     * Récupère la position de l'objet dans le tableau de données
+     *
+     * @param jsonArray         tableau de données
+     * @param jsonObjectToFound objet à trouver
+     * @param fileName          nom du fichier
+     * @return
+     */
     private static int getIdOfObject(JSONArray jsonArray, JSONObject jsonObjectToFound, String fileName) {
         try {
             int idFound = -1;

@@ -1,21 +1,17 @@
 package com.olewski.myapplication.Activity;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.olewski.myapplication.R;
 import com.olewski.myapplication.model.List;
 import com.olewski.myapplication.service.ListService;
-
-import java.util.EventListener;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -47,13 +43,14 @@ public class ListActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
-    public View.OnClickListener aa(final Context context, final List list) {
+
+    public View.OnClickListener openList(final Context context, final List list) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,
                         "Open !", Toast.LENGTH_LONG).show();
-               gotoTaskActivity(list.getId(), context);
+                gotoTaskActivity(list.getId(), context);
             }
         };
     }
