@@ -2,7 +2,10 @@ package com.olewski.myapplication.Util;
 
 import android.content.Context;
 
+import com.olewski.myapplication.model.Task;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -130,34 +133,51 @@ public class UtilFilesStorage {
      * @param jsonObject
      * @return
      */
-    public static boolean writeDataInJson(Context context, JSONObject jsonObject, String fileName) {
+    public static boolean writeDataInJson(Context context, JSONObject jsonObject, Integer indexInArray, String fileName) {
         try {
+            //Récupération du tableau de données
             JSONArray jsonArray = readDataToJson(context, fileName);
             if (jsonArray != null && jsonObject != null) {
-                jsonArray.put(jsonObject);
-
+                //Si le tableau existe et si l'object à insérer n'est pas null
+                if (indexInArray != null) {
+                    //Si un index est spécifié on insert l'élements à la position voulue
+                    for (int i = jsonArray.length(); i > indexInArray; i--) {
+                        jsonArray.put(i, jsonArray.get(i - 1));
+                    }
+                    jsonArray.put(indexInArray, jsonObject);
+                } else {
+                    //Sinon on l'insert à la fin du tableau
+                    jsonArray.put(jsonObject);
+                }
+                //On ouvre le fichier
                 FileOutputStream file = openFileToWrite(context, fileName);
                 if (file != null) {
-
+                    //Ecriture du fichier en UTF-8
                     file.write(jsonArray.toString().getBytes(StandardCharsets.UTF_8));
                     closeFileToWrite(file);
                     return true;
                 }
             } else if (jsonObject != null) {
+                //Si le tableau n'existe pas on ouvre le fichier
                 FileOutputStream file = openFileToWrite(context, fileName);
 
                 if (file != null && fileName.equals("dataList.json")) {
+                    //Si le fichier dataList existe existe
                     JSONArray jsonArray1 = new JSONArray("[]");
+                    //On créer un nouveau tableau et on insère l'objet et on ajoute la liste default qui possède un id 0
                     JSONObject jsonDefaultList = new JSONObject();
                     jsonDefaultList.put("id", 0);
                     jsonDefaultList.put("name", "Default");
                     jsonArray1.put(jsonDefaultList);
                     jsonArray1.put(jsonObject);
+                    //Ecriture du fichier
                     file.write(jsonArray1.toString().getBytes(StandardCharsets.UTF_8));
                     return true;
                 } else if (file != null) {
+                    //Création du tableau vide
                     JSONArray jsonArray1 = new JSONArray("[]");
                     jsonArray1.put(jsonObject);
+                    //Ecriture du fichier
                     file.write(jsonArray1.toString().getBytes(StandardCharsets.UTF_8));
                     return true;
                 }
@@ -167,7 +187,6 @@ public class UtilFilesStorage {
             e.printStackTrace();
         }
         return false;
-
     }
 
     /**
@@ -179,29 +198,9 @@ public class UtilFilesStorage {
         try {
             JSONArray jsonArray = readDataToJson(context, fileName);
             if (jsonArray != null && jsonObject != null) {
-                int idFound = -1;
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                    if (jsonObject1.has("id") && jsonObject1.has("text") && jsonObject1.has("isDone")
-                            && jsonObject.has("id") && jsonObject.has("text") && jsonObject.has("isDone")) {
-                        if (jsonObject1.getInt("id") == jsonObject.getInt("id")
-                                && jsonObject1.getString("text").equals(jsonObject.get("text")) &&
-                                jsonObject1.getBoolean("isDone") == jsonObject.getBoolean("isDone")) {
-                            idFound = i;
-                            break;
-                        }
-                    } else if (jsonObject1.has("id") && jsonObject1.has("name")
-                            && jsonObject.has("id") && jsonObject.has("name")) {
-                        if (jsonObject1.getInt("id") == jsonObject.getInt("id")
-                                && jsonObject1.getString("name").equals(jsonObject.getString("name"))) {
-                            idFound = i;
-                            break;
-                        }
-                    }
-                }
-                if (idFound != -1) {
+                int idFound = getIdOfObject(jsonArray, jsonObject, fileName);
+                if (idFound != -1)
                     jsonArray.remove(idFound);
-                }
 
                 FileOutputStream file = openFileToWrite(context, fileName);
                 if (file != null) {
@@ -216,4 +215,64 @@ public class UtilFilesStorage {
         }
         return false;
     }
+
+    public static void modifyDataInJson(Context context, JSONObject jsonObject, String fileName) {
+        try {
+            //Récupération du tableau de données
+            JSONArray jsonArray = readDataToJson(context, fileName);
+            if (jsonArray != null && jsonObject != null) {
+                //Sauvegarde de la position de l'object dans le tableau
+                int idFound = getIdOfObject(jsonArray, jsonObject, fileName);
+                //Si l'object existe bien dans le tableau
+                if (idFound != -1) {
+                    //Récupération de l'object à modifier
+                    JSONObject objectFound = jsonArray.getJSONObject(idFound);
+
+                    //Suppression de l'ancien objet
+                    removeDataInJson(context, objectFound, fileName);
+
+                    //Inversion de la valeur de isDone
+                    boolean isDone = jsonObject.getBoolean("isDone");
+                    jsonObject.remove("isDone");
+                    jsonObject.put("isDone", !isDone);
+
+                    //Réécriture de l'objet dans le fichier
+                    writeDataInJson(context, jsonObject, idFound, fileName);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static int getIdOfObject(JSONArray jsonArray, JSONObject jsonObjectToFound, String fileName) {
+        try {
+            int idFound = -1;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObjectTrait = null;
+
+                jsonObjectTrait = jsonArray.getJSONObject(i);
+
+                if (jsonObjectTrait.has("id") && jsonObjectTrait.has("text") && jsonObjectTrait.has("isDone")
+                        && jsonObjectToFound.has("id") && jsonObjectToFound.has("text") && jsonObjectToFound.has("isDone")) {
+                    if (jsonObjectTrait.getDouble("id") == jsonObjectToFound.getDouble("id")
+                            && jsonObjectTrait.getString("text").equals(jsonObjectToFound.get("text")) &&
+                            jsonObjectTrait.getBoolean("isDone") == jsonObjectToFound.getBoolean("isDone")) {
+                        return i;
+                    }
+                } else if (jsonObjectTrait.has("id") && jsonObjectTrait.has("name")
+                        && jsonObjectToFound.has("id") && jsonObjectToFound.has("name")) {
+                    if (jsonObjectTrait.getInt("id") == jsonObjectToFound.getInt("id")
+                            && jsonObjectTrait.getString("name").equals(jsonObjectToFound.getString("name"))) {
+                        return i;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return -1;
+    }
+
 }

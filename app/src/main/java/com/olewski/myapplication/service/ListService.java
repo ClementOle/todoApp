@@ -58,7 +58,7 @@ public class ListService {
             jsonObject.put("id", list.getId());
             jsonObject.put("name", list.getName());
 
-            UtilFilesStorage.writeDataInJson(context, jsonObject, fileName);
+            UtilFilesStorage.writeDataInJson(context, jsonObject, null, fileName);
 
         } catch (Exception e) {
             System.out.println("It didn't work !! \n" + e.toString());

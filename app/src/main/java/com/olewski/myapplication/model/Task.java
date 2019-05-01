@@ -1,9 +1,7 @@
 package com.olewski.myapplication.model;
 
-import java.util.Objects;
-
 public class Task {
-    private Integer id;
+    private Double id;
     private String text;
     private Boolean isDone;
     private Integer listId;
@@ -16,25 +14,25 @@ public class Task {
         this.isDone = isDone;
     }
 
-    public Task(Integer id, String text, Boolean isDone) {
+    public Task(Double id, String text, Boolean isDone) {
         this.id = id;
         this.text = text;
         this.isDone = isDone;
         this.listId = 0;
     }
 
-    public Task(Integer id, String text, Boolean isDone, Integer listId) {
+    public Task(Double id, String text, Boolean isDone, Integer listId) {
         this.id = id;
         this.text = text;
         this.isDone = isDone;
         this.listId = listId;
     }
 
-    public Integer getId() {
+    public Double getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Double id) {
         this.id = id;
     }
 

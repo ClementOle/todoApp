@@ -48,8 +48,7 @@ public class CrudApiService {
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject jsonTask = response;
-                    Task task = null;
-                    task = new Task(Integer.parseInt(jsonTask.getString("id")), jsonTask.getString("text"), Boolean.parseBoolean(jsonTask.getString("isDone")));
+                    Task task = new Task(jsonTask.getDouble("id"), jsonTask.getString("text"), jsonTask.getBoolean("isDone"));
 
                     getRequest(context, activity);
                 } catch (JSONException e) {
@@ -92,7 +91,7 @@ public class CrudApiService {
                     for (int i = 0; i < response.length(); i++) {
                         // Get current json object
                         JSONObject jsonTask = response.getJSONObject(i);
-                        Task task = new Task(Integer.parseInt(jsonTask.getString("id")), jsonTask.getString("text"), Boolean.parseBoolean(jsonTask.getString("isDone")));
+                        Task task = new Task(jsonTask.getDouble("id"), jsonTask.getString("text"), jsonTask.getBoolean("isDone"));
 
                         //showTask(activity, context, task);
                     }
