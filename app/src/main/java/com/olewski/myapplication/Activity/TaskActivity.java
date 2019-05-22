@@ -28,19 +28,19 @@ public class TaskActivity extends AppCompatActivity {
         Button getButton = findViewById(R.id.button2);
         getButton.setOnClickListener(configureGetButton());
 
-        Button button1 = findViewById(R.id.button4);
+        /*Button button1 = findViewById(R.id.button4);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoMenu();
 
             }
-        });
+        });*/
     }
 
-    public void gotoMenu() {
+    /*public void gotoMenu() {
         finish();
-    }
+    }*/
 
     protected View.OnClickListener configureGetButton() {
         return new View.OnClickListener() {
