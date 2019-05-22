@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/DarkTheme"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="false"
     tools:context=".Activity.ListActivity">
 
     <Button
@@ -28,9 +30,11 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="68dp"
         android:ems="10"
+        android:focusable="false"
         android:focusableInTouchMode="true"
         android:inputType="textMultiLine|textLongMessage|text"
         android:textColor="@android:color/white"
+        android:windowSoftInputMode="stateAlwaysHidden"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.0"
