@@ -16,10 +16,8 @@ import com.olewski.myapplication.R;
 import com.olewski.myapplication.Util.UtilFilesStorage;
 import com.olewski.myapplication.model.Task;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,19 +75,21 @@ public class TaskService {
                 listTasksModif.add(newTask);
                 mapper.writerWithDefaultPrettyPrinter().writeValue(UtilFilesStorage.openFileToWrite(context, fileName), listTasksModif);
                 for (Task task : listTasksModif) {
-                    showTask(activity, context, task, fileName);
+                    if (task.getListId().equals(TaskActivity.idList))
+                        showTask(activity, context, task, fileName);
                 }
             } else {
                 Task[] newTask = new Task[1];
                 newTask[0] = new Task(null, editText.getText().toString(), false, TaskActivity.idList);
                 mapper.writerWithDefaultPrettyPrinter().writeValue(UtilFilesStorage.openFileToWrite(context, fileName), newTask);
-                showTask(activity, context, newTask[0], fileName);
+                if (newTask[0].getListId().equals(TaskActivity.idList))
+                    showTask(activity, context, newTask[0], fileName);
             }
 
             editText.setText("");
 
         } catch (Exception e) {
-            System.out.println("It didn't work !! \n" + e.toString());
+            System.out.println("Error : " + e.toString());
         }
     }
 
@@ -112,13 +112,13 @@ public class TaskService {
         }
         CheckBox checkBox = new CheckBox(context);
         checkBox.setChecked(task.getIsDone());
-        checkBox.setOnClickListener(modifyTask(activity, context, task, fileName));
+        checkBox.setOnClickListener(modifyTask(activity, context, task, fileName, linearLayout1));
 
         Button deleteButton = new Button(context);
         deleteButton.setText("X");
         deleteButton.setPadding(2, 2, 2, 2);
 //        deleteButton.setId(task.getId());
-        deleteButton.setOnClickListener(configureDeleteButton(activity, context, task, fileName));
+        deleteButton.setOnClickListener(configureDeleteButton(activity, context, task, fileName, linearLayout1));
 
         linearLayout1.addView(checkBox);
         linearLayout1.addView(textView);
@@ -126,45 +126,58 @@ public class TaskService {
         linearLayout.addView(linearLayout1);
     }
 
-    private static View.OnClickListener modifyTask(final Activity activity, final Context context, final Task task, final String fileName) {
+    private static View.OnClickListener modifyTask(final Activity activity, final Context context, final Task task, final String fileName, final LinearLayout linearLayout) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    JSONObject jsonObjectToModify = new JSONObject();
-                    jsonObjectToModify.put("id", task.getId());
-                    jsonObjectToModify.put("text", task.getText());
-                    jsonObjectToModify.put("isDone", task.getIsDone());
-                    if (task.getListId() != null)
-                        jsonObjectToModify.put("listId", task.getListId());
+                List<Task> taskSaved = getTaskFromJson(context, activity, fileName);
+                if (taskSaved != null && taskSaved.size() > 0) {
+                    List<Task> modifiedTask = new ArrayList<>(taskSaved);
+                    int index = modifiedTask.indexOf(task);
+                    if (index != -1) {
+                        task.setIsDone(!task.getIsDone());
+                        modifiedTask.set(index, task);
 
-                    UtilFilesStorage.modifyDataInJson(context, jsonObjectToModify, fileName);
-                    getTaskFromJson(context, activity, fileName);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            mapper.writerWithDefaultPrettyPrinter().writeValue(UtilFilesStorage.openFileToWrite(context, fileName), modifiedTask);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (task.getIsDone()) {
+                            linearLayout.setBackgroundColor(Color.BLACK);
+                        } else {
+                            linearLayout.setBackgroundColor(Color.DKGRAY);
+                        }
+                    }
                 }
+                getTaskFromJson(context, activity, fileName);
+
             }
         };
 
     }
 
-    private static View.OnClickListener configureDeleteButton(final Activity activity, final Context context, final Task task, final String fileName) {
+    private static View.OnClickListener configureDeleteButton(final Activity activity, final Context context, final Task task, final String fileName, final LinearLayout linearLayout) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //Conversion de l'object en jsonObject
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("id", task.getId());
-                    jsonObject.put("text", task.getText());
-                    jsonObject.put("isDone", task.getIsDone());
-                    if (task.getListId() != null)
-                        jsonObject.put("listId", task.getListId());
+                List<Task> taskSaved = getTaskFromJson(context, activity, fileName);
+                if (taskSaved != null && taskSaved.size() > 0) {
+                    List<Task> modifiedTask = new ArrayList<>(taskSaved);
+                    int index = modifiedTask.indexOf(task);
+                    if (index != -1) {
+                        modifiedTask.remove(index);
 
-                    UtilFilesStorage.removeDataInJson(context, jsonObject, fileName);
-                    getTaskFromJson(context, activity, fileName);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            mapper.writerWithDefaultPrettyPrinter().writeValue(UtilFilesStorage.openFileToWrite(context, fileName), modifiedTask);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        linearLayout.removeAllViews();
+                    }
                 }
             }
         };
