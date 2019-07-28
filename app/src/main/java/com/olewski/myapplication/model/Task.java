@@ -1,8 +1,12 @@
 package com.olewski.myapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Task {
     private Double id;
     private String text;
+    @JsonProperty("isDone")
     private Boolean isDone;
     private Integer listId;
 
@@ -44,11 +48,11 @@ public class Task {
         this.text = text;
     }
 
-    public Boolean getDone() {
+    public Boolean getIsDone() {
         return isDone;
     }
 
-    public void setDone(Boolean done) {
+    public void setIsDone(Boolean done) {
         isDone = done;
     }
 
