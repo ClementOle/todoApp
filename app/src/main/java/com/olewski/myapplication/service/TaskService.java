@@ -117,8 +117,9 @@ public class TaskService {
         Button deleteButton = new Button(context);
         deleteButton.setText("X");
         deleteButton.setPadding(2, 2, 2, 2);
-//        deleteButton.setId(task.getId());
+
         deleteButton.setOnClickListener(configureDeleteButton(activity, context, task, fileName, linearLayout1));
+
 
         linearLayout1.addView(checkBox);
         linearLayout1.addView(textView);
