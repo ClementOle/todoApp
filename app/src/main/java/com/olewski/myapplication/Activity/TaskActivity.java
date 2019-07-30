@@ -2,8 +2,10 @@ package com.olewski.myapplication.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.olewski.myapplication.R;
 import com.olewski.myapplication.Util.UtilFilesStorage;
@@ -17,6 +19,19 @@ public class TaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+        EditText editText = findViewById(R.id.editText);
+        editText.setFocusable(true);
+/*        editText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+            }
+        });*/
+
+
 
         UtilFilesStorage.createFile(this, "dataTodo.json");
 
@@ -28,19 +43,19 @@ public class TaskActivity extends AppCompatActivity {
         Button getButton = findViewById(R.id.button2);
         getButton.setOnClickListener(configureGetButton());
 
-        Button button1 = findViewById(R.id.button4);
+        /*Button button1 = findViewById(R.id.button4);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoMenu();
 
             }
-        });
+        });*/
     }
 
-    public void gotoMenu() {
+    /*public void gotoMenu() {
         finish();
-    }
+    }*/
 
     protected View.OnClickListener configureGetButton() {
         return new View.OnClickListener() {
