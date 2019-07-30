@@ -137,7 +137,7 @@ public class CrudApiService {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks/";
         try {
-            JSONObject jsonObject = new JSONObject("{ 'id' : '" + task.getId() + "', 'text' : '" + task.getText() + "', 'isDone' : '" + task.getDone() + "'}");
+            JSONObject jsonObject = new JSONObject("{ 'id' : '" + task.getId() + "', 'text' : '" + task.getText() + "', 'isDone' : '" + task.getIsDone() + "'}");
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject, new Response.Listener<JSONObject>() {
                 @Override

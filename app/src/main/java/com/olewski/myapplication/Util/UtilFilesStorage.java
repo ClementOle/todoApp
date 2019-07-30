@@ -130,6 +130,7 @@ public class UtilFilesStorage {
                 closeFileToRead(file);
             }
             if (!data.toString().equals("")) {
+                System.out.println(data.toString());
                 return new JSONArray(new JSONTokener(data.toString()));
             }
             return null;
