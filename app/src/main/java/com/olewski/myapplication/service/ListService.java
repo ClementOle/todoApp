@@ -2,16 +2,12 @@ package com.olewski.myapplication.service;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
-import com.olewski.myapplication.Activity.ListActivity;
 import com.olewski.myapplication.R;
 import com.olewski.myapplication.Util.UtilFilesStorage;
 import com.olewski.myapplication.model.List;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ListService {
@@ -24,7 +20,7 @@ public class ListService {
      * @param fileName Nom du fichier
      */
 
-    public static void getListFromJson(final Context context, final Activity activity, String fileName) {
+  /*  public static void getListFromJson(final Context context, final Activity activity, String fileName) {
         try {
             JSONArray jsonArray = UtilFilesStorage.readDataToJson(context, fileName);
             if (jsonArray != null) {
@@ -45,7 +41,7 @@ public class ListService {
             e.printStackTrace();
         }
     }
-
+*/
     /**
      * Sauvegarde la liste
      *
@@ -56,7 +52,7 @@ public class ListService {
 
     public static void saveListInJson(Context context, Activity activity, String fileName) {
         try {
-            EditText editText = activity.findViewById(R.id.editText2);
+            EditText editText = activity.findViewById(R.id.listEditText);
 
             List list = new List(editText.getText().toString());
             editText.setText("");
@@ -78,6 +74,7 @@ public class ListService {
      * @param context
      * @param list     liste à afficher
      */
+    /*
     public static void showList(final Activity activity, final Context context, final List list) {
         LinearLayout linearLayout = activity.findViewById(R.id.listTaskLinearLayout);
         LinearLayout linearLayout1 = new LinearLayout(context);
@@ -93,6 +90,7 @@ public class ListService {
         linearLayout1.addView(button);
         linearLayout.addView(linearLayout1);
     }
+    */
 
 
 }
