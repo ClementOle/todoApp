@@ -44,9 +44,7 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 boolean isInserted = db.newList(listEditText.getText().toString());
-                if (isInserted)
-                    Toast.makeText(ListActivity.this, "Success !", Toast.LENGTH_LONG).show();
-                else
+                if (!isInserted)
                     Toast.makeText(ListActivity.this, "Error !", Toast.LENGTH_LONG).show();
 
                 showAll();

@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.olewski.myapplication.Activity.TaskActivity;
 import com.olewski.myapplication.R;
 import com.olewski.myapplication.Util.UtilFilesStorage;
@@ -24,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TaskService {
-
+/*
     public static List<Task> getTaskFromJson(final Context context, final Activity activity, String fileName) {
         try {
             //Ouverture du fichier
@@ -183,4 +182,5 @@ public class TaskService {
             }
         };
     }
+    */
 }

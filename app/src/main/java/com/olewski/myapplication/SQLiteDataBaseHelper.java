@@ -86,4 +86,9 @@ public class SQLiteDataBaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_TASK_NAME + " WHERE " + COL_LIST_ID_TASK + " = " + listId, null);
     }
 
+    public boolean updateTask(Task task) {
+        SQLiteDatabase db = this.getWritableDatabase();
+       // db.rawQuery("UPDATE ")
+        return true;
+    }
 }
