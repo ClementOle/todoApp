@@ -1,33 +1,11 @@
 package com.olewski.myapplication.service;
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.olewski.myapplication.R;
-import com.olewski.myapplication.model.Task;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class CrudApiService {
     /**
      * @param context
      * @param activity
      */
-    public static void postRequest(final Context context, final Activity activity) {
+    /*public static void postRequest(final Context context, final Activity activity) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks";
@@ -62,13 +40,13 @@ public class CrudApiService {
             }
         });
         queue.add(jsonObjectRequest);
-    }
+    }*/
 
     /**
      * @param context
      * @param activity
      */
-    public static void getRequest(final Context context, final Activity activity) {
+    /*public static void getRequest(final Context context, final Activity activity) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks";
 
@@ -105,13 +83,13 @@ public class CrudApiService {
         });
         queue.add(jsonArrayRequest);
     }
-
+*/
     /**
      * @param task
      * @param activity
      * @param context
      */
-    private static void delete(final Task task, final Activity activity, final Context context) {
+    /*private static void delete(final Task task, final Activity activity, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks/" + task.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
@@ -127,13 +105,13 @@ public class CrudApiService {
         });
         queue.add(stringRequest);
     }
-
+*/
     /**
      * @param task
      * @param activity
      * @param context
      */
-    private static void update(final Task task, final Activity activity, final Context context) {
+    /*private static void update(final Task task, final Activity activity, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://192.168.43.60:8080/tasks/";
         try {
@@ -155,5 +133,5 @@ public class CrudApiService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

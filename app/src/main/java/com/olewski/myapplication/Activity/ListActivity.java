@@ -1,6 +1,7 @@
 package com.olewski.myapplication.Activity;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,12 +33,12 @@ public class ListActivity extends AppCompatActivity {
         db = new SQLiteDataBaseHelper(this);
 
 
-        listPostButton.setOnClickListener(test());
+        listPostButton.setOnClickListener(postList());
         showAll();
     }
 
 
-    public View.OnClickListener test() {
+    public View.OnClickListener postList() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,11 +60,10 @@ public class ListActivity extends AppCompatActivity {
         Cursor data = db.getAllList();
         java.util.List<List> listAllList = new ArrayList<>();
         while (data.moveToNext()) {
-            listAllList.add(new List(data.getString(0)));
-            listAllList.add(new List(data.getString(1)));
+            listAllList.add(new List(data.getInt(0), data.getString(1)));
         }
 
-        for (List list : listAllList) {
+        for (final List list : listAllList) {
             LinearLayout linearLayout1 = new LinearLayout(getApplicationContext());
             linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -71,7 +71,18 @@ public class ListActivity extends AppCompatActivity {
             button.setText(list.getName());
             button.setPadding(2, 2, 2, 2);
             button.setId(list.getId());
-            //button.setOnClickListener(new ListActivity().openList(context, list));
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
+
+                    TaskActivity.idList = list.getId();
+                    System.out.println(TaskActivity.idList + "!!!!!!!!!!!!!!" + list.getId());
+
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            });
 
             linearLayout1.addView(button);
             linearLayout.addView(linearLayout1);
