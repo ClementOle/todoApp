@@ -76,7 +76,7 @@ public class TaskActivity extends AppCompatActivity {
                 else
                     Toast.makeText(TaskActivity.this, "Error !", Toast.LENGTH_LONG).show();
 
-                showAllTaskByCurrentListId();
+                //showAllTaskByCurrentListId();
             }
         };
     }

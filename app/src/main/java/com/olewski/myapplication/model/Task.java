@@ -86,12 +86,4 @@ public class Task {
                 ", listId=" + listId +
                 '}';
     }
-
-    public String toStringJson() {
-        return "{" +
-                "\"id\" : \"" + id + "\", " +
-                "\"text\" : \"" + text + "\", " +
-                "\"isDone\" : \'" + isDone + "\"" +
-                "} ";
-    }
 }
