@@ -1,4 +1,4 @@
-package com.olewski.myapplication.model;
+package com.olewski.myapplication.Model;
 
 public class Task {
     private Integer id;

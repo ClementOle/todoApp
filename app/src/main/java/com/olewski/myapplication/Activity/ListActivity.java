@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.olewski.myapplication.R;
-import com.olewski.myapplication.SQLiteDataBaseHelper;
-import com.olewski.myapplication.model.List;
+import com.olewski.myapplication.Database.SQLiteDataBaseHelper;
+import com.olewski.myapplication.Model.List;
 
 import java.util.ArrayList;
 
@@ -44,9 +44,9 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 boolean isInserted = db.newList(listEditText.getText().toString());
+                listEditText.setText("");
                 if (!isInserted)
                     Toast.makeText(ListActivity.this, "Error !", Toast.LENGTH_LONG).show();
-
                 showAll();
             }
         };
@@ -75,7 +75,6 @@ public class ListActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
 
                     TaskActivity.idList = list.getId();
-                    System.out.println(TaskActivity.idList + "!!!!!!!!!!!!!!" + list.getId());
 
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);

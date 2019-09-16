@@ -1,4 +1,4 @@
-package com.olewski.myapplication;
+package com.olewski.myapplication.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.olewski.myapplication.model.Task;
+import com.olewski.myapplication.Model.Task;
 
 public class SQLiteDataBaseHelper extends SQLiteOpenHelper {
 

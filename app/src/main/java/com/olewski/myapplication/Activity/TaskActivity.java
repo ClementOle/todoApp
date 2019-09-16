@@ -13,8 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.olewski.myapplication.R;
-import com.olewski.myapplication.SQLiteDataBaseHelper;
-import com.olewski.myapplication.model.Task;
+import com.olewski.myapplication.Database.SQLiteDataBaseHelper;
+import com.olewski.myapplication.Model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,12 +71,13 @@ public class TaskActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 boolean isInserted = db.newTask(new Task(editText.getText().toString(), false, idList));
+                editText.setText("");
                 if (isInserted)
                     Toast.makeText(TaskActivity.this, "Success !", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(TaskActivity.this, "Error !", Toast.LENGTH_LONG).show();
 
-                //showAllTaskByCurrentListId();
+                showAllTaskByCurrentListId();
             }
         };
     }
@@ -88,8 +89,10 @@ public class TaskActivity extends AppCompatActivity {
         while (data.moveToNext()) {
             listTask.add(new Task(data.getInt(0), data.getString(1), Boolean.getBoolean(data.getString(2)), data.getInt(3)));
         }
+        LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+        linearLayout.removeAllViews();
         for (Task task : listTask) {
-            LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+
             LinearLayout linearLayout1 = new LinearLayout(getApplicationContext());
             linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -107,6 +110,7 @@ public class TaskActivity extends AppCompatActivity {
             }
             CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setChecked(task.getIsDone());
+            System.out.println(task.getIsDone() + " is Done ?");
             //checkBox.setOnClickListener(modifyTask(this, getApplicationContext(), task, fileName, linearLayout1));
 
             Button deleteButton = new Button(getApplicationContext());
