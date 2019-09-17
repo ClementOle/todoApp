@@ -1,42 +1,32 @@
-package com.olewski.myapplication.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.olewski.myapplication.Model;
 
 public class Task {
-    private Double id;
+    private Integer id;
     private String text;
-    @JsonProperty("isDone")
     private Boolean isDone;
     private Integer listId;
 
     public Task() {
     }
 
-    public Task(String text, Boolean isDone) {
+    public Task(String text, Boolean isDone, Integer listId) {
         this.text = text;
         this.isDone = isDone;
+        this.listId = listId;
     }
 
-    public Task(Double id, String text, Boolean isDone) {
-        this.id = id;
-        this.text = text;
-        this.isDone = isDone;
-        this.listId = 0;
-    }
-
-    public Task(Double id, String text, Boolean isDone, Integer listId) {
+    public Task(Integer id, String text, Boolean isDone, Integer listId) {
         this.id = id;
         this.text = text;
         this.isDone = isDone;
         this.listId = listId;
     }
 
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -95,13 +85,5 @@ public class Task {
                 ", isDone=" + isDone +
                 ", listId=" + listId +
                 '}';
-    }
-
-    public String toStringJson() {
-        return "{" +
-                "\"id\" : \"" + id + "\", " +
-                "\"text\" : \"" + text + "\", " +
-                "\"isDone\" : \'" + isDone + "\"" +
-                "} ";
     }
 }

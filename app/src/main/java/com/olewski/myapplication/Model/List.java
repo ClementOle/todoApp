@@ -1,4 +1,4 @@
-package com.olewski.myapplication.model;
+package com.olewski.myapplication.Model;
 
 public class List {
 
